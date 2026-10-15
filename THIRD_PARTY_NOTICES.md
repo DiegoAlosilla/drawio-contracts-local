@@ -1,0 +1,26 @@
+# Atribuciones y licencias
+
+Este proyecto conserva la distribución del editor fuera de Git. No altera sus avisos o marcas y no se presenta como oficial ni patrocinado por Draw.io.
+
+- **Draw.io 32.4.1**, JGraph Holdings Ltd / draw.io AG y contribuidores. Código: Apache-2.0. [Fuente fijada](https://github.com/jgraph/drawio/tree/9034053fba80a435e27d68d374bc564b83917ae9), [licencia](licenses/drawio-Apache-2.0.txt), [README y términos de assets](licenses/drawio-README.md).
+- Iconos, stencils y plantillas tienen condiciones adicionales del distribuidor. Conservar los `LICENSE` de `img`, `shapes`, `stencils` y `templates` en el runtime. No trasladar la licencia Apache del código a todos los assets. No se autoriza distribución en ecosistema Atlassian sin revisar los términos específicos. Este proyecto es la distribución local independiente acordada.
+- **esbuild 0.28.2**, Evan Wallace y contribuidores: MIT (paquete y binario específico de plataforma). Solo empaquetado/desarrollo.
+- **TypeScript 7.0.2**, Microsoft y contribuidores: Apache-2.0. Solo comprobación de tipos/desarrollo.
+- **fflate 0.8.3**, Arjun Barrett y contribuidores: MIT. Solo extracción del WAR.
+- **@playwright/test / playwright / playwright-core 1.64.0**, Microsoft y contribuidores: Apache-2.0. Solo pruebas. Los navegadores se descargan aparte con sus avisos; no se versionan ni redistribuyen.
+
+Copias de los avisos/licencias de paquetes en `licenses/`. Los paquetes originales también conservan sus avisos dentro de `node_modules`.
+
+- **YAML 2.9.1**, eemeli y contribuidores: ISC. Parser YAML seguro.
+- **Ajv 8.20.0**, **ajv-draft-04 1.0.0**, **ajv-formats 3.0.1**, Evgeny Poberezkin y contribuidores: MIT. Validación estructural y formatos; sus licencias se conservan junto a las dependencias transitivas (`fast-uri`, `fast-deep-equal`, `json-schema-traverse`, `require-from-string`).
+- **@apidevtools/openapi-schemas 2.1.0**, James Messinger y contribuidores: MIT. Schemas 2.0/3.0.
+- **OpenAPI Initiative / Linux Foundation**, schema oficial OpenAPI 3.1 fechado 2022-10-07: fuente, SHA y adaptación de compilación en `config/openapi-validation.json`, copia de [licencia Apache-2.0](licenses/openapi-schemas-Apache-2.0.txt). El archivo descargado se conserva byte por byte. La licencia del código y los avisos de specs se conservan; no se redistribuye el sitio/documentación completa.
+
+## Biblioteca de documentación
+
+- **Swagger UI / swagger-ui-dist 5.33.2**, SmartBear Software y contribuidores: Apache-2.0. [Fuente fijada](https://github.com/swagger-api/swagger-ui/tree/v5.33.2), [licencia](licenses/swagger-ui-dist-Apache-2.0.txt), [avisos del bundle y componentes incluidos](licenses/swagger-ui-dist-bundle-NOTICE.txt). Se empaquetan JavaScript/CSS originales con plugins locales; no se usa CDN. El bundle incluye sus dependencias (React, Redux, Swagger Client y otras); se conservan sus avisos.
+- **@scarf/scarf 1.4.0**, dependencia de instalación de swagger-ui-dist: [Apache-2.0](licenses/scarf-Apache-2.0.txt). Analítica deshabilitada expresamente mediante `scarfSettings.enabled=false` en el proyecto; no se importa en el plugin ni se ejecuta en el navegador.
+
+## Código propio
+
+La licencia de publicación todavía no ha sido elegida por el responsable. `package.json` es privado. El respaldo en un repositorio privado no concede una licencia pública del código propio. Resolver licencia, nombre y responsable antes de distribuir públicamente.
