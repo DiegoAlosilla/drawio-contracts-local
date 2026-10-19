@@ -4,7 +4,7 @@
 |---|---|
 | Fecha | 13 de octubre de 2026 |
 | Estado | Etapas técnicas 0–5 comprobadas con límites; piloto de utilidad pendiente (§21) |
-| Versión del documento | 1.11 |
+| Versión del documento | 1.13 |
 | Tipo de proyecto | Herramienta comunitaria de código abierto para equipos de ingeniería de software |
 | Plataforma inicial | Draw.io web ejecutado localmente en el navegador |
 | Distribución prevista | Repositorio público, clonación y comando de arranque |
@@ -680,3 +680,37 @@ Verificación: TypeScript, 15 pruebas de núcleo y 14 escenarios de navegador; t
 ## 30. Primera versión y repositorio remoto privado
 
 15 de octubre de 2026 (America/Lima). El responsable autoriza subir el proyecto y toda su documentación a un remoto y nombrar esta entrega versión 1. Se usa **1.0.0** en paquete/lockfile y **v1.0.0** como etiqueta. Las entregas históricas 1.7–1.11 son iteraciones de desarrollo, no releases SemVer anteriores. Repositorio privado de la cuenta autenticada: [DiegoAlosilla/drawio-contracts-local](https://github.com/DiegoAlosilla/drawio-contracts-local). Código, ejemplos ficticios, pruebas, ADR, evidencias y atribuciones se versionan; runtime/dependencias/temporales/datos privados permanecen excluidos. La licencia de distribución pública sigue pendiente. Esta autorización cubre el respaldo remoto y su versión, sin añadir conexión GitHub al producto ni despliegue web. [Notas y límites de v1.0.0](docs/releases/v1.0.0.md).
+
+## 31. Propuesta de generación inversa, pendiente de discusión
+
+16 de octubre de 2026 (America/Lima). El usuario informa feedback favorable de compañeros que usaron el proyecto y una petición mayoritaria de generar contratos desde figuras. Se estudia una plantilla local y se prepara [ADR-010](docs/adr/ADR-010-autoria-y-generacion-contratos.md), en estado **propuesto**, junto al [análisis de estructura, errores y prioridades](docs/analisis-generacion-contratos.md). No se acepta todavía una nueva persistencia, dialecto de salida o perfil institucional; no se implementa generación ni consulta BIAN. Las exclusiones del MVP y ADR-003 permanecen vigentes. El piloto formal sigue pendiente; el feedback informado no se presenta como medición ejecutada.
+
+Seguimiento: se recibe y [analiza estáticamente el ruleset Spectral](docs/analisis-ruleset-spectral.md); faltan sus funciones locales y versión del ejecutor. El usuario indica uso de la última versión BIAN con salvedad de conocimiento. Se registra como referencia provisional BIAN 14.0 / artefactos 14.0.0, contrastada con fuentes oficiales, sin fijar todavía datos ni almacenamiento de catálogo.
+
+Seguimiento tras recibir las funciones: paquete revisado y ejecutado con Spectral CLI 6.17.0 en entorno temporal, sin alterar originales ni dependencias del producto. La plantilla produce 0 errores/4 warnings; 24 casos ficticios contrastan las reglas y límites observados, con cero intentos de red durante validación. [Detalle](docs/analisis-ruleset-spectral.md). Pendientes versión exacta del ejecutor institucional, integración/condiciones de uso y aceptación de autoría/persistencia; ADR-010 sigue propuesto.
+
+## 32. Autoría aprobada: primer recorrido G1
+
+16 de octubre de 2026 (America/Lima). El usuario aprueba edición en panel y conservación de borradores incompletos en `.drawio`. [ADR-010](docs/adr/ADR-010-autoria-y-generacion-contratos.md) acepta G1 y concreta el atributo independiente `contractsDrafts` formato 1, identidad explícita, transacciones, límites y compatibilidad por comprobar antes de implementar. Amplía las exclusiones históricas del MVP únicamente para este recorrido de autoría y generación 3.0.1; importación 3.1/3.0/2.0 y snapshots permanecen según ADR-003. Perfil básico estructural identificado como tal; Spectral institucional y BIAN integrado no se anuncian implementados.
+
+## 33. Pausa de generación desde figuras y prioridad BIAN
+
+18 de octubre de 2026 (America/Lima). El usuario solicita retirar la autoría G1 de la interfaz y dejar la generación en pausa: exige demasiados datos y resulta más rápido editar YAML. [ADR-010 revisado](docs/adr/ADR-010-autoria-y-generacion-contratos.md) sustituye su aprobación operativa anterior sin borrar el historial. Se conservan borradores existentes, referencias y protección de copia/presupuesto. Si se retoma, será un bosquejo incompleto desde figuras asociadas explícitamente, sin pedir headers/responses/request body completos. No se amplía la generación en esta entrega.
+
+Los controles de consulta conservan colores nativos de Draw.io; Swagger mantiene sus métodos HTTP. La siguiente prioridad es consultar BIAN para orientar dominio, acción y denominación de un endpoint según su propósito, independiente de la generación. Después, animación. Integrar catálogo BIAN requiere ADR de datos, versión fijada y condiciones de uso; no se presenta como ya implementado.
+
+## 34. Consulta BIAN local por propósito
+
+18 de octubre de 2026 (America/Lima). El usuario autoriza implementar consulta de dominio, acción y denominación BIAN según el propósito de un endpoint. [ADR-011](docs/adr/ADR-011-consulta-bian-local.md), creado antes de integrar los datos, define catálogo, fuentes, versión, licencia, huellas y uso local. Contratos incorpora **Consultar BIAN**, búsqueda léxica español/inglés con equivalencias propias identificadas, filtro por acción y visor de definiciones y operaciones oficiales (`operationId`, método, ruta, descripciones y tags). No se reactiva autoría de ADR-010 ni se incorpora animación.
+
+Se verifican las fuentes oficiales: Landscape 14.0 y Semantic APIs 14.0.0; conjunto elegido **BOM extended OAS 3.x**, commit `b58bf4c2c300dd018afc084e9bb24b7adaaa3500`, 258 dominios/4.580 operaciones. No se mezcla con ISO20022/DDD ni AsyncAPI ni se declara cobertura de todo el Landscape. SHA-256 por fuente/catálogo/licencia en el manifiesto, Git blob por fuente, extracción reproducible, copia de licencia Apache-2.0 y atribución BIAN. Se preservan 16 artefactos sin operaciones y uno sin definición, con avisos explícitos. No se inventan nombres oficiales ni se presenta el resultado como certificación o regla institucional.
+
+Datos incluidos en el plugin, sin peticiones externas durante consulta, sin IA/backend, sin cambios de registro, figuras, borradores o dialectos. Propósito y selección solo en memoria, reiniciados al cambiar documento; controles nativos y Swagger 5.33.2 conservados. TypeScript, build, 24 pruebas de núcleo y 18 escenarios de navegador aprobados; cierre focal tras ajustar desempate de rutas. Verificación del catálogo completo contra fuentes fijadas y arranque/consulta con red externa bloqueada usando runtime ya preparado. Evidencias, resultados concretos y límites en [compatibilidad](docs/compatibilidad.md) y [progreso](docs/progreso.md). Piloto humano, ampliación de vocabulario y licencia pública propia siguen pendientes. Sin publicación ni subidas.
+
+## 35. Ayuda BIAN, español y referencias en el lienzo
+
+18 de octubre de 2026 (America/Lima). El usuario solicita aclarar acciones y elección de dominio, traducciones, agregar un endpoint desde BIAN y una guía de uso. [ADR-012](docs/adr/ADR-012-guia-bian-y-referencias-en-figuras.md), creado antes de implementar la nueva persistencia, amplía ADR-011 con Guía BIAN, ayuda contextual de 15 acciones, nombres traducidos/resúmenes propios para los 258 dominios y originales ingleses conservados. Selector manual, términos cubiertos/faltantes y ejemplo de comparación Consumer Loan/Corporate Loan/Loan/Customer Offer; no inferir automáticamente una acción o dominio ideal ni presentarlo como certificación.
+
+Agregar endpoint crea una figura nativa editable de referencia de diseño, con un snapshot mínimo bianRef formato 1, procedencia/revisión/huella/licencia/atribución, límite de 32 KiB y una sola transacción. Selección por referencia explícita, copia autosuficiente entre documentos, conservación de snapshots guardados divergentes y versiones desconocidas sin reescritura. No genera/importa contratos ni reactiva ADR-010. Textos oficiales y huellas del catálogo intactos; las ayudas españolas son propias y versionadas. Sin IA, backend, ejecución de APIs ni animación.
+
+TypeScript/build, 26 pruebas del núcleo y 20 escenarios de navegador aprobados; cierre final de 5 escenarios tras conservar scroll y añadir comprobaciones de referencia divergente. Guía/español/filtro/inserción también comprobados con red externa bloqueada sobre runtime preparado. Evidencia, alcance y límites en [compatibilidad](docs/compatibilidad.md), [progreso](docs/progreso.md) y [resumen](docs/evidence/bian-feedback-summary.json). Sin commit, push, publicación o subidas; piloto humano y licencia propia pendientes.

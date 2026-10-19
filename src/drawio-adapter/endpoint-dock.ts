@@ -5,6 +5,8 @@ import {readContract} from '../contracts/import';
 import type {ContractModel,OperationView} from '../contracts/types';
 import {readRegistry,findRevision,REF_ATTRIBUTE,REGISTRY_ATTRIBUTE} from '../persistence/registry';
 import {contractCell,selectionContractTarget} from './component-figure';
+import {BIAN_REF_ATTRIBUTE} from '../bian/reference';
+import {insertBianFigure} from './bian-figure';
 
 declare const mxEvent:any;
 export interface EndpointDock{
@@ -19,8 +21,15 @@ export interface EndpointDock{
 export function installEndpointDock(ui:any):EndpointDock{
   contractStyles();const graph=ui.editor.graph,native=ui.formatContainer,format=ui.format;
   const root=el('aside','','ct-native-contracts');root.setAttribute('aria-label','Panel de contratos');
+  // The native sidebar permits INPUT/SELECT but cancels TEXTAREA mouse focus
+  // and text selection. Extend its instance hook only for our text areas.
+  const isSelectionAllowed=ui.isSelectionAllowed;
+  ui.isSelectionAllowed=function(event:Event){
+    const target=event.target;
+    return target instanceof HTMLTextAreaElement&&root.contains(target)||isSelectionAllowed.call(this,event);
+  };
   let handlers:CatalogHandlers={insert:()=>{},bindDrag:()=>{}};
-  const browser=apiBrowser({insert:(...args)=>handlers.insert(...args),insertAll:contract=>handlers.insertAll?.(contract),bindDrag:(...args)=>handlers.bindDrag(...args)},()=>ui.actions.get('contractsImport').funct());root.append(browser.element);
+  const browser=apiBrowser({insert:(...args)=>handlers.insert(...args),insertAll:contract=>handlers.insertAll?.(contract),bindDrag:(...args)=>handlers.bindDrag(...args)},()=>ui.actions.get('contractsImport').funct(),reference=>{const cell=insertBianFigure(ui,reference);suppressSelection=true;try{graph.setSelectionCell(cell);graph.scrollCellToVisible(cell);}finally{suppressSelection=false;}});root.append(browser.element);
   let active=false,tab:HTMLElement|undefined,customContent:HTMLElement|undefined,suppressSelection=false;
   let cachedRaw:string|null|undefined,cachedNode:any,contracts:ContractModel[]=[];
   const resizer=el('div','','ct-contracts-resizer');resizer.tabIndex=0;resizer.title='Arrastra para ajustar el ancho · Flechas para ajustar con teclado';resizer.setAttribute('role','separator');resizer.setAttribute('aria-label','Ancho del panel de contratos');resizer.setAttribute('aria-orientation','vertical');
@@ -36,6 +45,7 @@ export function installEndpointDock(ui:any):EndpointDock{
   function sync(){
     const raw=ui.fileNode?.getAttribute(REGISTRY_ATTRIBUTE)??null,node=ui.fileNode;
     if(raw===cachedRaw&&node===cachedNode)return;
+    if(node!==cachedNode)browser.resetBian();
     cachedRaw=raw;cachedNode=node;
     try{contracts=readRegistry(raw).revisions.map(readContract);browser.setContracts(contracts);}
     catch(error){cachedRaw=undefined;contracts=[];browser.setContracts([]);root.replaceChildren(el('p',error instanceof Error?error.message:String(error),'ct-api-empty'));root.dataset.contractUnavailable='true';return;}
@@ -49,6 +59,8 @@ export function installEndpointDock(ui:any):EndpointDock{
     resizer.setAttribute('aria-valuemin',String(min));resizer.setAttribute('aria-valuemax',String(max));resizer.setAttribute('aria-valuenow',String(width));
   }
   function apply(){
+    // Swagger's white document is isolated; extension controls follow the editor.
+    root.style.setProperty('--ct-editor-scheme',document.body.classList.contains('geDarkMode')?'dark':'light');
     ui.container.classList.toggle('ct-contracts-open',active&&ui.formatWidth>0);
     if(!tab)return;
     const header=tab.parentElement!;
@@ -68,7 +80,7 @@ export function installEndpointDock(ui:any):EndpointDock{
   format.immediateRefresh=function(...args:any[]){
     if(native.offsetWidth===0)return refresh.apply(this,args);
     const focused=document.activeElement instanceof HTMLElement&&root.contains(document.activeElement)?document.activeElement:null;
-    const scroll=root.querySelector<HTMLElement>('.ct-swagger-scroll'),scrollTop=scroll?.scrollTop??0;
+    const scroll=root.querySelector<HTMLElement>('.ct-swagger-scroll,.ct-bian-scroll'),scrollTop=scroll?.scrollTop??0;
     root.remove();resizer.remove();const result=refresh.apply(this,args);
     const header=native.querySelector('.geFormatTitleContainer');
     if(header){
@@ -89,6 +101,8 @@ export function installEndpointDock(ui:any):EndpointDock{
     if(suppressSelection)return;
     const cells=graph.getSelectionCells();if(cells.length!==1)return;
     try{
+      const bian=graph.getAttributeForCell(clicked??cells[0],BIAN_REF_ATTRIBUTE,'');
+      if(bian){sync();customContent=undefined;browser.showBianReference(bian);root.replaceChildren(browser.element);open();return;}
       const target=selectionContractTarget(graph,clicked??cells[0]);if(!target)return;
       sync();const contract=contracts.find(item=>item.revision.apiId===target.ref.apiId&&item.revision.revisionId===target.ref.revisionId);
       if(!contract)throw new Error('Contrato no disponible: falta la revisión en este documento.');

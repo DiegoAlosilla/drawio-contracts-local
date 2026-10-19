@@ -47,3 +47,19 @@ Verificación y evidencia ejecutada de esta entrega en progreso/compatibilidad. 
 Prueba de navegador sobre pestañas reales: ubicación/clases/colores nativos, búsqueda persistente, API completa con acciones, cambio de API, inserción única, selección vacía sin perder consulta, vuelta a Estilo y retorno, no coincidencias, viewport estrecho, undo/redo y conservación de geometría/identidad/snapshot. Regresión de interpretación, seguridad, clipboard, guardado y perfiles limpios. Resultados ejecutados y captura en [compatibilidad](../compatibilidad.md) y [progreso](../progreso.md).
 
 La extensión del método/clases nativos se certifica solo en Draw.io 32.4.1/kennedy probado. Una actualización exige verificar regeneración de tabs y controles. No se afirma compatibilidad con todos los layouts, keywords JSON Schema o tamaños de contrato. Etapa 6 pendiente de participantes; no se da por aprobado un piloto con esta prueba automatizada.
+
+### Colores nativos — revisión del 18 de octubre de 2026
+
+El usuario pide retirar el verde azulado propio de la extensión y mantener los colores de la interfaz. Agregar todos usa geBtn; Agregar al lienzo reutiliza las variables nativas de texto, fondo, borde, hover y foco a través del Shadow DOM. La superficie gris del editor se conserva en ese botón para mantener contraste también cuando el editor está oscuro y Swagger conserva su documento claro. Arrastrar usa el texto del documento Swagger. Se retiran la paleta propia de la extensión y su variante oscura; no se cambia el WAR ni se añaden dependencias.
+
+Comparación ejecutada de texto, fondo efectivo y borde de los botones frente a Importar en el editor kennedy claro y oscuro, más revisión visual de [claro](../evidence/consulta-nativa-clara.png) y [oscuro](../evidence/consulta-nativa-oscura.png). Swagger conserva sus colores de método HTTP. La autoría desde figuras está en pausa según ADR-010; esta revisión no reactiva generación.
+
+### Consulta BIAN — 18 de octubre de 2026
+
+[ADR-011](ADR-011-consulta-bian-local.md) añade **Consultar BIAN** debajo de la fila intacta Busca tu API / Importar. Abre una consulta de referencia local dentro de la misma pestaña, con controles y colores nativos; no se cambia el editor ni Swagger UI. La × recupera la API/operación previa, la búsqueda de API vuelve al catálogo y la selección vinculada del lienzo abre su contrato como antes. La consulta BIAN se conserva en memoria entre vistas y páginas, se limpia al cambiar de documento y no produce cambios de figuras, snapshots o borradores. No incorpora autoría ni asigna referencias BIAN a figuras.
+
+### Guía e inserción BIAN — revisión posterior del 18 de octubre de 2026
+
+Corrección posterior de interacción: el adaptador extiende `ui.isSelectionAllowed` únicamente para los `textarea` contenidos en el panel de contratos. El hook nativo aceptaba INPUT/SELECT y cancelaba mousedown/selectstart del propósito BIAN. Se delega el resto de eventos al hook original, sin modificar fuentes del editor, persistencia ni atajos. Prueba con clic desde otro campo, arrastre de selección y teclado real en claro/oscuro: [resultado](../evidence/bian-input-results.json).
+
+[ADR-012](ADR-012-guia-bian-y-referencias-en-figuras.md) añade Guía BIAN, ayuda de acciones, español propio con original disponible e inserción explícita de referencias de operación. Las figuras BIAN se identifican por bianRef, separado de contractRef/borradores; su selección recupera el snapshot guardado, no Swagger ni un contrato generado. Se conserva scroll de la vista activa (Swagger o BIAN) al reconstruir el panel nativo, evitando volver al inicio tras agregar. Colores/clases nativos y fila Busca tu API/Importar intactos. Verificación y límites en ADR-012/compatibilidad.

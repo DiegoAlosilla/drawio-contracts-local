@@ -4,6 +4,10 @@ Editor Draw.io real con extensión propia basada en [ADR-001](ADR-001-extension-
 
 Notas de la primera versión: [v1.0.0](docs/releases/v1.0.0.md). Índice de toda la documentación: [docs/README.md](docs/README.md). Historial: [CHANGELOG.md](CHANGELOG.md).
 
+Estado del checkout al 18 de octubre de 2026: [generación desde figuras en pausa, ADR-010](docs/adr/ADR-010-autoria-y-generacion-contratos.md). Se retiraron los controles de autoría; los borradores ya guardados se conservan en el archivo. **Consulta BIAN local disponible en Contratos → Consultar BIAN**, para explorar dominio, acción y denominación de endpoint según su propósito; [ADR-011](docs/adr/ADR-011-consulta-bian-local.md). Animación queda pendiente. No se ha publicado otra versión.
+
+El [ruleset y sus funciones recibidas](docs/analisis-ruleset-spectral.md) se ejecutaron localmente con Spectral CLI 6.17.0: plantilla con 0 errores/4 warnings y 24 casos ficticios contrastados, sin intentos de red durante validación. Es una revisión temporal, sin integración Spectral al producto; falta confirmar la versión del ejecutor del equipo. La consulta usa BIAN Landscape 14.0 / artefactos 14.0.0 BOM OAS, fijados y diferenciados de convenciones institucionales.
+
 Repositorio privado: [DiegoAlosilla/drawio-contracts-local](https://github.com/DiegoAlosilla/drawio-contracts-local). Etiqueta de la primera versión: `v1.0.0`.
 
 ## Arrancar
@@ -27,6 +31,8 @@ La primera ejecución instala las dependencias del lockfile y descarga el WAR of
 Abrir [Draw.io local](http://127.0.0.1:8080/?lang=es&ui=kennedy&mode=device&gapi=0&db=0&od=0&gh=0&gl=0&tr=0&browser=0&picker=0&stealth=1&math=0). La configuración local se aplica también al abrir `/` sin parámetros. Tema clásico probado; otros temas no están certificados.
 
 ## Probar
+
+La generación desde figuras está en pausa. No aparecen Nueva API, Abrir borrador ni el formulario de autoría. El [diagrama ficticio histórico de G1](examples/diagrams/autoria-g1-ficticia.drawio) se conserva como fixture de compatibilidad; abrirlo y guardarlo mantiene sus datos. La importación y consulta siguen disponibles. Los controles de la extensión usan los colores del editor; Swagger conserva sus colores propios para los métodos HTTP.
 
 1. En el panel derecho, abrir **Contratos**, junto a las pestañas nativas **Diagrama/Estilo** (o **Estilo/Texto/Organizar** al seleccionar una figura). **Importar** está en la misma fila que el buscador. Elegir JSON/YAML: se incorpora al catálogo con un aviso breve, sin resumen modal ni contador de APIs. Ejemplos: `examples/contracts/clientes-3.1-ficticios.json`, `ofertas-3.0-ficticias.yaml`, `archivos-swagger-2-ficticios.json`.
 2. Usar el buscador con placeholder **Busca tu API**, sin label adicional, y elegir una API importada. Debajo aparece su contrato completo con Swagger UI: todos los endpoints plegados inicialmente, cada uno con **Agregar al lienzo** y **Arrastrar dentro de su cabecera**, junto a Copiar. Desplegar un endpoint muestra parámetros, cuerpo, respuestas y Example Value/Schema. La búsqueda permanece visible y conserva su texto al consultar, insertar o cambiar de pestaña. La **×** del visor retira la documentación, limpia el filtro y devuelve la lista completa al espacio disponible. No borra contratos ni figuras. La vista no incluye Clasificación de nuevas figuras; las nuevas inserciones se crean sin clasificación. Las rutas iguales de APIs distintas conservan referencias diferentes.
@@ -55,19 +61,36 @@ Si aparece **INVALID_FILE** al importar YAML, revise que el archivo conserve los
 
 Comprobación pública acotada: los nueve contratos de `examples/` de postmanlabs/openapi-to-postman en el commit fijado tienen **7 aceptados y 2 originales inválidos**. [Matriz y límites](docs/adr/ADR-006-consulta-y-diagnosticos.md). Para repetir: `npm run test:corpus` (descarga inicial al directorio ignorado work); con `npm start` en otra terminal, `npm run test:corpus:browser`. Estas pruebas no son una integración GitHub del editor y no prueban todo ese repositorio.
 
+## Consultar BIAN por propósito
+
+El campo de propósito permite clic, selección de texto con ratón y edición por teclado, también después de consultar la ayuda. Corrección de foco verificada en kennedy claro/oscuro: [evidencia](docs/evidence/bian-input-summary.json).
+
+En **Contratos → Consultar BIAN**, escribir por ejemplo «consultar saldo de una cuenta corriente» o «iniciar préstamo personal». Abrir un dominio y revisar su definición y operaciones: **acción**, `operationId`, método/ruta y descripciones oficiales. **Guía BIAN** explica el recorrido y cómo comparar responsabilidades; el botón **?** junto a **Acción · filtro manual** explica las 15 acciones con traducción y ejemplo. El selector no se infiere ni cambia automáticamente: filtra operaciones que ya contienen esa acción en la fuente. Se pueden explorar todos los dominios sin escribir; **Mostrar más dominios** amplía la lista. Volver con **← Dominios** y cerrar con **×** para recuperar el contrato consultado. Importar y Busca tu API siguen visibles; seleccionar una figura vinculada recupera Swagger y expande su operación como antes.
+
+El catálogo incluye **258 dominios y 4.580 operaciones** del conjunto oficial **BIAN Semantic APIs 14.0.0, BOM extended OAS 3.x**, commit `b58bf4c2c300dd018afc084e9bb24b7adaaa3500`. No incluye todo el Landscape, ISO20022/DDD ni AsyncAPI. **Fuente, alcance y ayuda de búsqueda** muestra versión, procedencia, licencia y equivalencias utilizadas. **Español de apoyo** muestra nombres traducidos y resúmenes propios de los 258 dominios (`es-support/1`), con el original disponible en **Dominio · definición oficial en inglés**. Las descripciones de operaciones, operationId, métodos y rutas conservan el original. Las equivalencias españolas `es-en-local/2` son ayuda propia de búsqueda léxica. Ninguna es traducción oficial, regla interna o certificación de un nombre único correcto. Los resultados muestran términos cubiertos y faltantes; comparar producto, cliente y etapa. La guía diferencia Consumer Loan, Corporate Loan, Loan y Customer Offer.
+
+Dieciséis artefactos no publican operaciones en `paths`; otro carece de definición de dominio. Se muestran esos huecos sin inventar contenido. Catálogo/licencia/huellas y procedimiento reproducible en [data/bian](data/bian/README.md). No se ejecutan APIs, no se descargan referencias y no se envía el propósito a ningún servidor. Consulta sin conectividad externa después del bootstrap; datos incluidos en el plugin. Propósito, filtros y selección permanecen solo en memoria y se limpian al cambiar de documento.
+
+**Agregar endpoint al lienzo**, dentro de cada operación BIAN, crea una figura editable de **referencia de diseño** en una transacción deshacible. Conserva dominio, operación y revisión/fuente/licencia en `bianRef` formato 1, hasta 32 KiB por figura. Al seleccionarla se consulta esa operación guardada. Copiarla a otro documento transporta su referencia propia; compartir el dibujo comparte ese extracto. Editar su etiqueta no cambia los datos BIAN. No importa un contrato, no genera YAML ni afirma que el endpoint esté implementado. Borradores y snapshots OpenAPI permanecen separados. Referencias desconocidas se conservan con diagnóstico. [ADR-012](docs/adr/ADR-012-guia-bian-y-referencias-en-figuras.md) define guía, español y persistencia.
+
 ## Verificar
 
 ```powershell
 npm run test:browser-install
 npm test
 npm run test:startup
+node scripts/bian-catalog.mjs --download
+node tests/runtime/bian-offline.mjs
+node tests/runtime/bian-offline.mjs --support
 ```
 
 La instalación de Chromium es solo para desarrollo/pruebas, requiere Internet la primera vez y no forma parte de `npm start`. Las pruebas usan el editor real en Chromium, crean un archivo de ejemplo ficticio y verifican perfiles separados. `test:startup` crea y clona un repositorio Git temporal local en `work/`, ejecuta `npm start` sin dependencias/runtime y prueba reutilización con conexiones externas bloqueadas, puertos y huella inválidos. No publica ni configura remotos externos. Requiere que 8081 esté libre. Evidencias temporales en `work/`, resultados en `test-results/`.
 
+`bian-catalog.mjs --download` es una verificación de desarrollo opcional: descarga exclusivamente los YAML fijados y comprueba su proyección y huellas; después se repite sin `--download` y sin red. No forma parte del arranque/build. `bian-offline.mjs` usa temporalmente 8082 y las dependencias/WAR ya preparados para arrancar con red externa bloqueada en Node y Chromium y consultar BIAN; `--support` también comprueba guía, español, filtro manual e inserción real. No repite un bootstrap limpio.
+
 ## Estructura y límites
 
-`src/contracts` parsea/valida e interpreta las tres líneas sin DOM ni Draw.io; `src/model` define identidades, `src/persistence` define el registro versionado y `src/catalog`/`src/inspector` crean interfaz de consulta segura. `src/drawio-adapter` concentra APIs, inserción, clipboard y transacciones del editor. `scripts` prepara y sirve la distribución sin alterar el WAR.
+`src/contracts` parsea/valida e interpreta las tres líneas sin DOM ni Draw.io; `src/model` define identidades, `src/persistence` define el registro versionado y `src/catalog`/`src/inspector` crean interfaz de consulta segura. `src/bian` aporta tipos y búsqueda pura del catálogo en `data/bian`. `src/drawio-adapter` concentra APIs, inserción, clipboard y transacciones del editor. `scripts` prepara y sirve la distribución sin alterar el WAR.
 
 El producto no integra GitHub, animación, migración histórica, llamadas reales, analítica ni otra web. Límites de entrada: 5 MiB por archivo, 15 MiB por documento/datos expandidos, 64 niveles y 200000 nodos; cadenas de referencias hasta 64 saltos. Swagger UI controla la expansión visual de modelos, inicialmente a un nivel; el antiguo límite visual propio de seis niveles ya no aplica. Referencias internas JSON Pointer; anchors, bases `$id`, `$dynamicRef` y dialectos personalizados se rechazan con diagnóstico. Callbacks/webhooks se conservan pero no se enumeran en el catálogo. No es un validador completo de payloads/gramática MIME. Solo Windows está probado; versiones de editor/temas/navegadores no ensayados no se anuncian compatibles.
 

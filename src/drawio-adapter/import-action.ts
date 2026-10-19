@@ -3,6 +3,7 @@ import {ContractError} from '../contracts/types';
 import {MAX_FILE_BYTES} from '../contracts/parse';
 import {readRegistry,REGISTRY_ATTRIBUTE} from '../persistence/registry';
 import {RegistryAttributeChange} from './registry-change';
+import {DRAFTS_ATTRIBUTE,assertDraftDocumentBudget} from '../persistence/drafts';
 import type {ContractModel} from '../contracts/types';
 export function registerImport(ui: any, report: (error: unknown)=>void,completed:(contract:ContractModel,duplicate:boolean)=>void): void {
   ui.actions.addAction('contractsImport',()=>{
@@ -20,6 +21,7 @@ export function registerImport(ui: any, report: (error: unknown)=>void,completed
         const current=readRegistry(before);
         const prepared=await prepareImport(new Uint8Array(await file.arrayBuffer()),format,current);
         if(ui.fileNode!==node||node.getAttribute(REGISTRY_ATTRIBUTE)!==before)throw new Error('El documento cambió durante la importación. Vuelva a seleccionar el contrato.');
+        assertDraftDocumentBudget(node.getAttribute(DRAFTS_ATTRIBUTE),prepared.registry);
         if(!prepared.duplicate){
           const model=ui.editor.graph.getModel();model.beginUpdate();
           try {model.execute(new RegistryAttributeChange(node,JSON.stringify(prepared.registry)));}

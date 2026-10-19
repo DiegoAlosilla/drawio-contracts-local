@@ -12,7 +12,7 @@ export function createSwaggerInspector(actions?:{insert:(operation:OperationView
   const heading=el('h2','','ct-swagger-selection'),note=el('p','Swagger UI · Solo documentación','ct-note');
   const toolbar=el('div','','ct-swagger-toolbar');toolbar.append(note);
   const toolbarActions=el('div','','ct-swagger-toolbar-actions');
-  const addAll=el('button','＋ Agregar todos','ct-add-all');addAll.type='button';addAll.title='Agregar todos los endpoints de esta API a un contenedor';addAll.onclick=()=>{if(activeContract)actions?.insertAll?.(activeContract);};
+  const addAll=el('button','＋ Agregar todos','geBtn ct-add-all');addAll.type='button';addAll.title='Agregar todos los endpoints de esta API a un contenedor';addAll.onclick=()=>{if(activeContract)actions?.insertAll?.(activeContract);};
   if(actions?.insertAll)toolbarActions.append(addAll);
   if(actions?.close){const close=el('button','×','ct-close-render');close.type='button';close.title='Cerrar contrato';close.setAttribute('aria-label','Cerrar contrato');close.onclick=actions.close;toolbarActions.append(close);}
   toolbar.append(toolbarActions);
@@ -38,8 +38,10 @@ export function createSwaggerInspector(actions?:{insert:(operation:OperationView
     .swagger-ui .model-example{max-width:100%}.swagger-ui .highlight-code{overflow:auto}
     .ct-swagger-actions{display:flex;align-items:center;gap:8px;margin:4px;flex-shrink:0}
     .swagger-ui .opblock-summary-control{min-width:0;flex:1}.swagger-ui .opblock-summary{gap:2px}
-    .ct-add-operation{display:inline-flex;align-items:center;gap:5px;font:600 12px/1.3 Arial,sans-serif;color:#fff;background:#166b60;border:1px solid #11564e;border-radius:5px;padding:7px 10px;box-shadow:0 1px 2px #102d3c20;cursor:pointer}.ct-add-operation::before{content:'+';font-size:17px;line-height:12px;font-weight:400}.ct-add-operation:hover{background:#11564e}.ct-add-operation:active{background:#0d453f;box-shadow:none}.ct-add-operation:focus-visible{outline:2px solid #166b60;outline-offset:2px}
-    .ct-drag-operation{font:11px Arial,sans-serif;color:#526374;cursor:grab;padding:6px 3px}.ct-drag-operation:hover{color:#102d3c;text-decoration:underline}
+    /* Native button colors cross the shadow boundary through inherited tokens.
+       Swagger keeps its own HTTP method colors and documentation surface. */
+    .ct-add-operation{color-scheme:var(--ct-editor-scheme,light);display:inline-flex;align-items:center;gap:5px;font:550 12px/1.3 Arial,sans-serif;color:light-dark(var(--text-color),var(--dark-text-color));background:light-dark(var(--ge-panel-color),var(--ge-dark-panel-color));border:1px solid light-dark(var(--border-color),var(--dark-border-color));border-radius:3px;padding:7px 10px;cursor:pointer}.ct-add-operation::before{content:'+';font-size:17px;line-height:12px;font-weight:400}.ct-add-operation:hover{background:light-dark(var(--highlight-color),var(--dark-border-color))}.ct-add-operation:active{opacity:.75}.ct-add-operation:focus-visible{outline:2px solid light-dark(var(--focus-color),var(--dark-focus-color));outline-offset:2px}
+    .ct-drag-operation{font:11px Arial,sans-serif;color:#3b4151;cursor:grab;padding:6px 3px}.ct-drag-operation:hover{text-decoration:underline}
     @container(max-width:480px){.swagger-ui .opblock-summary-control{flex-basis:100%}.ct-swagger-actions{margin-left:auto}}
   `;
   const mount=el('div');shadow.append(style,mount);scroll.append(host);
