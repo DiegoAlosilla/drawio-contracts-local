@@ -3,6 +3,7 @@ import {root} from './bootstrap.mjs';
 import {resolve} from 'node:path';
 import {readFile} from 'node:fs/promises';
 export async function buildPlugin() {
+  await build({entryPoints:[resolve(root,'src/bian/assistant.ts')],outfile:resolve(root,'dist/bian-assistant.mjs'),bundle:true,platform:'node',format:'esm',target:'node24'});
   await build({entryPoints: [resolve(root, 'src/plugin.ts')], outfile: resolve(root, 'dist/contracts.js'),
     bundle: true, format: 'iife', target: 'es2022', sourcemap: true,
     plugins: [{name: 'raw', setup(builder) {

@@ -12,7 +12,7 @@ const clone = resolve(root, 'work', `clone-${runId}`);
 await mkdir(source, {recursive:true});
 // Reconstruct only versionable files. Do not copy runtime, dependencies or private files.
 const deliverables = ['.gitignore','.gitattributes','.node-version','.npmrc','ADR-001-extension-contratos-drawio.md','AGENTS.md','README.md',
-  'THIRD_PARTY_NOTICES.md','package.json','package-lock.json','tsconfig.json','playwright.config.mjs','config','src','scripts','tests','docs','licenses','examples'];
+  'THIRD_PARTY_NOTICES.md','package.json','package-lock.json','tsconfig.json','playwright.config.mjs','config','src','scripts','tests','docs','licenses','examples','data'];
 for (const path of deliverables) await cp(resolve(root,path),resolve(source,path),{recursive:true});
 function git(args,cwd) {
   const result=spawnSync('git',args,{cwd,encoding:'utf8'});

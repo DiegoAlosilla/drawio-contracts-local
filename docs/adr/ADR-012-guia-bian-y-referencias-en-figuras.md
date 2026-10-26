@@ -1,5 +1,7 @@
 # ADR-012 — Guía BIAN, apoyo en español e inserción explícita
 
+**Ampliación 23/10/2026:** [ADR-013](ADR-013-asistencia-bian-ia-local.md) permite sugerencias con explicación de IA local opcional. Se mantienen guía/español propios y originales oficiales, revisión manual, bianRef formato 1 e inserción deshacible. No se guardan explicaciones ni consultas en las figuras.
+
 Fecha: 18 de octubre de 2026 (America/Lima). Estado: aceptado para implementar los cuatro comentarios del usuario sobre BIAN. Amplía ADR-011; autoría/generación continúa en pausa según ADR-010.
 
 ## Decisión de interacción

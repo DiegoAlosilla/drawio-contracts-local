@@ -23,13 +23,13 @@ test('BIAN: propósito local, definiciones y rutas oficiales, ida y vuelta con S
   await expect(page.locator('.ct-bian-status')).toContainText('258 dominios');
   await expect(page.locator('.ct-bian-domain')).toHaveCount(30);await page.getByRole('button',{name:'Mostrar más dominios'}).click();await expect(page.locator('.ct-bian-domain')).toHaveCount(60);
   await purpose.fill('consultar saldo de una cuenta corriente');await expect(page.locator('.ct-bian-domain').first()).toHaveText('Current Account');
-  await expect(page.locator('.ct-bian').getByText(/Ayuda local: consultar → retrieve/)).toBeVisible();
+  await page.locator('.ct-bian-provenance>summary').click();await expect(page.locator('.ct-bian').getByText(/Ayuda local: consultar → retrieve/)).toBeVisible();await page.locator('.ct-bian-provenance>summary').click();
   await page.getByRole('combobox',{name:'Acción BIAN'}).selectOption('Retrieve');
   await page.getByRole('button',{name:'Current Account',exact:true}).click();
   await expect(page.locator('.ct-bian-detail h3')).toBeFocused();await expect(page.locator('.ct-bian-detail')).toContainText('orchestrates a consumer checking/demand deposit account');
-  await expect(page.locator('.ct-bian-operation')).toHaveCount(9);
+  await expect(page.locator('.ct-bian-operation')).toHaveCount(1);await expect(page.getByRole('combobox',{name:'Operación BIAN'}).locator('option')).toHaveCount(9);
   await expect(page.locator('.ct-bian-operation').first()).toContainText('GET /CurrentAccount/{currentaccountid}/Retrieve');
-  expect(await page.locator('.ct-bian-operation').allTextContents()).toEqual(expect.arrayContaining([expect.stringContaining('RetrieveInterest')]));
+  const picker=page.getByRole('combobox',{name:'Operación BIAN'});await picker.selectOption({label:await picker.locator('option').filter({hasText:/^RetrieveInterest ·/}).textContent()});await expect(page.locator('.ct-bian-operation')).toContainText('RetrieveInterest');
   await page.getByText('Fuente, alcance y ayuda de búsqueda',{exact:true}).click();
   await expect(page.locator('.ct-bian-provenance')).toContainText('b58bf4c2c300dd018afc084e9bb24b7adaaa3500');
   await expect(page.locator('.ct-bian-provenance')).toContainText('Apache-2.0');

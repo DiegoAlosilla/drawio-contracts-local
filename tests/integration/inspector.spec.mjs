@@ -54,14 +54,18 @@ test('Swagger UI real: herencia, refs, esquemas 3.1, respuestas, seguridad y sel
 
 test('Swagger UI: ejemplos sin schema, selector nativo, ventana estrecha y aislamiento del formato',async({page})=>{
   const sample={openapi:'3.0.0',info:{title:'API de inventario ficticio',version:'1.0.0'},paths:{'/articulos':{get:{summary:'Consultar artículos de demostración',responses:{'200':{description:'Artículos disponibles',content:{'application/json':{examples:{disponibles:{summary:'Con resultados',value:{articulos:[{id:'F-001',nombre:'Artículo ficticio'}]}},vacio:{summary:'Sin resultados',value:{articulos:[]}},texto:{summary:'Texto original',value:'{"texto":"se conserva como cadena"}'}}}}},'404':{description:'Inventario no encontrado'}}}}}};
-  await page.goto('/?lang=es&ui=kennedy');await importSample(page,sample);
+  await page.goto('/?lang=es&ui=kennedy');await bridge(page);await importSample(page,sample);
   await chooseApi(page,'API de inventario ficticio');await page.getByRole('button',{name:'Agregar al lienzo GET /articulos · API de inventario ficticio',exact:true}).click();const panel=panelOf(page),response=panel.locator('.response[data-code="200"]');
   await expect(response.locator('pre')).toContainText('Artículo ficticio');
   await response.locator('.examples-select select').selectOption('vacio');await expect(response.locator('pre')).toContainText('"articulos": []');
   await response.locator('.examples-select select').selectOption('texto');await expect(response.locator('pre')).toContainText('se conserva como cadena');
   await response.locator('.examples-select select').selectOption('disponibles');
   await page.screenshot({path:'docs/evidence/swagger-ui-respuestas.png'});
-  await page.setViewportSize({width:640,height:720});await expect(response).toBeVisible();
+  await page.setViewportSize({width:640,height:720});
+  // Kennedy collapses its native Format panel after this responsive breakpoint.
+  // Wait for that event, then reopen through the editor's native action.
+  await page.waitForFunction(()=>testUi.lastWindowWidth===640);
+  await page.evaluate(()=>{if(testUi.formatWidth===0)testUi.actions.get('format').funct();});await expect(response).toBeVisible();
   expect(await panel.evaluate(element=>element.scrollWidth<=element.clientWidth+1)).toBe(true);
   await page.screenshot({path:'docs/evidence/swagger-ui-estrecho.png'});
   await page.setViewportSize({width:1440,height:1000});await page.emulateMedia({colorScheme:'dark'});

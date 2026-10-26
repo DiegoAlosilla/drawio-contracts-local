@@ -11,6 +11,9 @@
     "npm": "11.16.x"
   },
   "scripts": {
+    "ai:prepare": "node scripts/bian-ai-engine.mjs --prepare",
+    "ai:serve": "node scripts/bian-ai-engine.mjs",
+    "test:ai:real": "npm run build && node tests/runtime/bian-ai-real.mjs",
     "start": "node scripts/start.mjs",
     "build": "node scripts/build.mjs",
     "check": "tsc --noEmit",

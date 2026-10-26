@@ -1,5 +1,9 @@
 # ADR-011 — Consulta BIAN local por propósito
 
+**Ampliación 23/10/2026:** [ADR-013](ADR-013-asistencia-bian-ia-local.md) autoriza asistencia con IA local opcional y preparación independiente de motor/modelos. El recorrido léxico descrito aquí sigue sin IA ni envío del propósito; la asistencia requiere acción explícita y no altera fuentes ni persistencia BIAN.
+
+**Integridad de checkout 23/10/2026:** catálogo/apoyo/manifiesto JSON y licencia BIAN se marcan `-text` en .gitattributes para conservar bytes frente a core.autocrlf de Windows. El nuevo arranque limpio detectó que convertir LF a CRLF rompía las huellas fijadas. No se cambian contenido, catálogo, versión ni manifiesto; se preservan sus bytes originales.
+
 Fecha: 18 de octubre de 2026 (America/Lima). Estado: **aceptado para la primera porción de consulta**; verificación de implementación registrada al final. No reactiva ADR-010.
 
 **Ampliación autorizada posterior:** [ADR-012](ADR-012-guia-bian-y-referencias-en-figuras.md) agrega guía, ayuda de acciones, traducciones resumidas propias e inserción explícita con bianRef portable por figura. Sustituye los límites iniciales de esta primera porción sobre español y ausencia de asociaciones persistentes; consultar sigue siendo de solo lectura. No reactiva autoría/generación.

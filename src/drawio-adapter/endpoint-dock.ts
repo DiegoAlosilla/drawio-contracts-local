@@ -80,7 +80,7 @@ export function installEndpointDock(ui:any):EndpointDock{
   format.immediateRefresh=function(...args:any[]){
     if(native.offsetWidth===0)return refresh.apply(this,args);
     const focused=document.activeElement instanceof HTMLElement&&root.contains(document.activeElement)?document.activeElement:null;
-    const scroll=root.querySelector<HTMLElement>('.ct-swagger-scroll,.ct-bian-scroll'),scrollTop=scroll?.scrollTop??0;
+    const scrolls=Array.from(root.querySelectorAll<HTMLElement>('.ct-swagger-scroll,.ct-bian-scroll,.ct-bian-list-scroll')).map(element=>({element,top:element.scrollTop}));
     root.remove();resizer.remove();const result=refresh.apply(this,args);
     const header=native.querySelector('.geFormatTitleContainer');
     if(header){
@@ -88,10 +88,10 @@ export function installEndpointDock(ui:any):EndpointDock{
       tab.onclick=()=>{customContent=undefined;root.replaceChildren(browser.element);open();};
       tab.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();tab!.click();}};
       for(const title of Array.from(header.children) as HTMLElement[]){
-        title.addEventListener('click',()=>{active=false;customContent=undefined;root.hidden=true;ui.container.classList.remove('ct-contracts-open');tab?.classList.remove('geActiveFormatTitle');tab?.setAttribute('aria-selected','false');size();format.refresh();});
+        title.addEventListener('click',()=>{browser.pauseBian();active=false;customContent=undefined;root.hidden=true;ui.container.classList.remove('ct-contracts-open');tab?.classList.remove('geActiveFormatTitle');tab?.setAttribute('aria-selected','false');size();format.refresh();});
       }
       header.append(tab);native.append(root,resizer);apply();
-      if(active&&scroll)scroll.scrollTop=scrollTop;
+      if(active)for(const {element,top} of scrolls)element.scrollTop=top;
       if(active&&focused?.isConnected)focused.focus({preventScroll:true});
     }
     return result;
@@ -115,7 +115,7 @@ export function installEndpointDock(ui:any):EndpointDock{
   graph.addListener(mxEvent.CLICK,(_sender:any,event:any)=>{const cell=event.getProperty('cell');if(cell)selectionChanged(cell);});
   ui.editor.addListener('fileLoaded',()=>{customContent=undefined;cachedNode=undefined;sync();});
   ui.editor.addListener('pageSelected',sync);
-  ui.addListener('formatWidthChanged',()=>{ui.container.classList.toggle('ct-contracts-open',active&&ui.formatWidth>0);size();});
+  ui.addListener('formatWidthChanged',()=>{if(ui.formatWidth===0)browser.pauseBian();ui.container.classList.toggle('ct-contracts-open',active&&ui.formatWidth>0);size();});
   window.addEventListener('resize',size);
   let dimensions='';new ResizeObserver(()=>{const next=`${ui.diagramContainer.clientWidth}:${ui.diagramContainer.clientHeight}`;if(next!==dimensions){dimensions=next;graph.sizeDidChange();}}).observe(ui.diagramContainer);
   sync();format.refresh();

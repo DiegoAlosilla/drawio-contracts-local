@@ -25,6 +25,9 @@ La versión del proyecto es **1.0.0**. Las entregas de interfaz 1.7–1.11 queda
 - [ADR-010: autoría y generación desde figuras — en pausa desde 18/10/2026](adr/ADR-010-autoria-y-generacion-contratos.md)
 - [ADR-011: consulta BIAN local, catálogo/fuentes/versiones/licencias](adr/ADR-011-consulta-bian-local.md)
 - [ADR-012: guía BIAN, español de apoyo y referencia portable por figura](adr/ADR-012-guia-bian-y-referencias-en-figuras.md)
+- [ADR-013: asistencia BIAN con IA local opcional](adr/ADR-013-asistencia-bian-ia-local.md)
+- [Preparar y utilizar IA local](ia-local.md)
+- [Interfaz BIAN Lista y detalle y pruebas del cambio](compatibilidad.md#bian-lista-y-detalle--24102026)
 
 Estudio de referencia: [estructura de la plantilla, errores, prioridades y consulta BIAN](analisis-generacion-contratos.md). La autoría G1 se retiró de la interfaz el 18/10/2026; se conserva su evidencia histórica y sus datos existentes. **Consulta BIAN disponible en Contratos → Consultar BIAN**, con búsqueda por propósito y definiciones/operaciones oficiales locales. Animación sigue pendiente. Spectral institucional no está integrado.
 

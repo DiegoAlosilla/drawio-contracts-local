@@ -7,6 +7,8 @@ try {
   const webroot = await bootstrap();
   const {buildPlugin} = await import('./build.mjs');
   await buildPlugin();
+  const {createBianAssistant}=await import('./bian-ai.mjs');
+  const handleBianAi=await createBianAssistant(root);
   const port = Number(process.env.PORT || 8080);
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('PORT debe ser un entero entre 1 y 65535.');
   const mime = {'.html':'text/html; charset=utf-8', '.js':'application/javascript; charset=utf-8', '.css':'text/css',
@@ -16,9 +18,10 @@ try {
     res.setHeader('Content-Security-Policy', "default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'");
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Cache-Control', 'no-store');
-    if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); res.end(); return; }
     try {
       const url = new URL(req.url, 'http://127.0.0.1');
+      if(await handleBianAi(req,res,url))return;
+      if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); res.end(); return; }
       let path = decodeURIComponent(url.pathname);
       if (path.includes('..') || path.includes('\\') || path.includes('\0')) { res.writeHead(400); res.end(); return; }
       if (path === '/health') { res.writeHead(200); res.end('ok'); return; }

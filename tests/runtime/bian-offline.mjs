@@ -32,7 +32,7 @@ try{
     await page.getByRole('button',{name:'Filtrar por Initiate',exact:true}).click();
     await page.getByRole('textbox',{name:'Propósito del endpoint'}).fill('iniciar préstamo personal');await page.waitForFunction(()=>document.querySelector('.ct-bian-domain')?.textContent==='Consumer Loan');
     await page.getByRole('button',{name:'Consumer Loan',exact:true}).click();assert.match(await page.locator('.ct-bian-detail').textContent(),/Préstamo de consumo/);
-    await page.getByRole('button',{name:'Agregar endpoint BIAN ConsumerLoan Initiate',exact:true}).click();assert.match(await page.locator('.ct-bian-status').textContent(),/Referencia BIAN agregada/);
+    await page.getByRole('button',{name:'Agregar endpoint BIAN ConsumerLoan Initiate',exact:true}).click();assert.match(await page.locator('.ct-bian-notice').textContent(),/Referencia BIAN agregada/);
   }
   assert.deepEqual(external,[]);assert.deepEqual(errors,[]);assert.doesNotMatch(log,/OFFLINE_TEST|Descargando|Preparando dependencias/);
   const manifest=JSON.parse(await readFile('data/bian/manifest.json','utf8'));

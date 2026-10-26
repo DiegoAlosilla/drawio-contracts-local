@@ -34,7 +34,9 @@ test('ajustes de controles: ancho, cierre integrado y API completa portable en u
   await separator.press('Home');expect((await panel.boundingBox()).width).toBe(300);
   await expect(page.getByRole('button',{name:'Cerrar contrato',exact:true})).toBeVisible();
   await separator.press('End');expect((await panel.boundingBox()).width).toBe(1000);
-  await page.setViewportSize({width:640,height:720});expect((await panel.boundingBox()).width).toBeLessThanOrEqual(600);
+  await page.setViewportSize({width:640,height:720});
+  await page.waitForFunction(()=>testUi.lastWindowWidth===640);
+  await page.evaluate(()=>{if(testUi.formatWidth===0)testUi.actions.get('format').funct();});expect((await panel.boundingBox()).width).toBeLessThanOrEqual(600);
   await expect(search).toBeVisible();expect(await panel.evaluate(node=>node.scrollWidth<=node.clientWidth+1)).toBe(true);
   await page.setViewportSize({width:1440,height:1000});await separator.press('Home');
   const all=page.getByRole('button',{name:'Agregar todos los endpoints · API de clientes de demostración',exact:true});
